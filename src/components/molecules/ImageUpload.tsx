@@ -13,7 +13,9 @@ const getBase64 = (file: FileType): Promise<string> =>
 		reader.onerror = (error) => reject(error);
 	});
 
-const ImageUpload: React.FC = ({ isMultiple }: { isMultiple: boolean }) => {
+interface ImageUploadProps { isMultiple?: boolean }
+
+const ImageUpload: React.FC<ImageUploadProps> = ({ isMultiple = false }) => {
 	const [previewOpen, setPreviewOpen] = useState(false);
 	const [previewImage, setPreviewImage] = useState("");
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -44,7 +46,7 @@ const ImageUpload: React.FC = ({ isMultiple }: { isMultiple: boolean }) => {
 				fileList={fileList}
 				onPreview={handlePreview}
 				onChange={handleChange}
-				multiple={false}
+				multiple={isMultiple}
 			>
 				{fileList.length >= 8
 					? null

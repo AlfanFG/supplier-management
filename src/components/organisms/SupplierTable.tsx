@@ -58,10 +58,17 @@ const columns = [
 	},
 ];
 
-const SupplierTable: React.FC = () => {
-	const { data, isLoading } = useFetchSupplier();
+interface SupplierTableProps {
+	data?: SupplierDataType[];
+	isLoading?: boolean;
+}
 
-	if (isLoading) {
+const SupplierTable: React.FC<SupplierTableProps> = ({ data: propData, isLoading: propIsLoading }) => {
+	const fetchResult = useFetchSupplier();
+	const finalData = propData ?? fetchResult.data;
+	const finalIsLoading = propIsLoading ?? fetchResult.isLoading;
+
+	if (finalIsLoading) {
 		return (
 			<div className="flex justify-center py-10">
 				<Spin size="large" />
@@ -73,7 +80,7 @@ const SupplierTable: React.FC = () => {
 		<div className="bg-white rounded-lg overflow-hidden">
 			<Table
 				columns={columns}
-				dataSource={data}
+				dataSource={finalData}
 				pagination={{ pageSize: 5 }}
 				className="w-full"
 				rowClassName={(_, index) => (index % 2 !== 0 ? "bg-gray-50" : "bg-white")}
